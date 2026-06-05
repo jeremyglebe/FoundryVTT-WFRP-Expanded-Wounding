@@ -1,5 +1,5 @@
-﻿# FoundryVTT WFRP Expanded Wounding
+# WFRP4e Vue Module
 
-Public built-module release repository for the WFRP4e Expanded Wounding Foundry VTT module.
+This public README is copied into the public release repository by `npm run release:prepare`.
 
-Release artifacts are prepared from the private source repository.
+Replace this file in generated projects with player-facing or GM-facing module documentation.

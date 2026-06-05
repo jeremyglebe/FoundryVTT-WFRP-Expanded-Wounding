@@ -1,0 +1,7 @@
+{
+  "WFRP4E_EXPANDED_CRITICAL_HITS.settings.enableCriticalReplacement.hint": "When enabled, WFRP critical rolls from weapons with Wounding qualities use the expanded critical tables. Weapons without a Wounding quality use the normal WFRP tables.",
+  "WFRP4E_EXPANDED_CRITICAL_HITS.settings.enableCriticalReplacement.name": "Replace WFRP Critical Tables",
+  "WFRP4E_EXPANDED_CRITICAL_HITS.settings.openExpandedCriticalsWorkbench.hint": "Open the GM setup and diagnostics workbench for expanded critical tables.",
+  "WFRP4E_EXPANDED_CRITICAL_HITS.settings.openExpandedCriticalsWorkbench.label": "Open Expanded Criticals",
+  "WFRP4E_EXPANDED_CRITICAL_HITS.settings.openExpandedCriticalsWorkbench.name": "Expanded Criticals"
+}
