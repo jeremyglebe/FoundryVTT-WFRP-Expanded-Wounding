@@ -68,20 +68,20 @@ var e = "wfrp4e-expanded-critical-hits", t = "WFRP4e Expanded Critical Hits", n 
 	teethClaws: "Teeth & Claws",
 	unarmed: "Unarmed"
 }, u = {
-	arrows: "Wounding (Arrows)",
-	bolts: "Wounding (Bolts)",
-	bullets: "Wounding (Bullets)",
-	claws: "Wounding (Claws)",
-	crushing: "Wounding (Crushing)",
-	cutting: "Wounding (Cutting)",
-	energy: "Wounding (Energy)",
-	flame: "Wounding (Flame)",
-	piercing: "Wounding (Piercing)",
-	shot: "Wounding (Shot)",
-	shrapnel: "Wounding (Shrapnel)",
-	sling: "Wounding (Sling)",
-	teeth: "Wounding (Teeth)",
-	unarmed: "Wounding (Unarmed)"
+	arrows: "Arrows",
+	bolts: "Bolts",
+	bullets: "Bullets",
+	claws: "Claws",
+	crushing: "Crushing",
+	cutting: "Cutting",
+	energy: "Energy",
+	flame: "Flame",
+	piercing: "Piercing",
+	shot: "Shot",
+	shrapnel: "Shrapnel",
+	sling: "Sling",
+	teeth: "Teeth",
+	unarmed: "Unarmed"
 }, d = {
 	arrows: "arrowsBolts",
 	bolts: "arrowsBolts",
@@ -3234,52 +3234,177 @@ function Cs(e) {
 	return typeof e == "object" && e ? e : void 0;
 }
 //#endregion
+//#region src/module/wfrp4e/wounding-property-display.ts
+var ws = "ech-wounding-properties", Ts = new Set(Object.values(c)), Es = !1;
+function Ds(e) {
+	let t = { ...e };
+	for (let e of o) t[c[e]] = u[e];
+	return t;
+}
+function Os() {
+	Es ||= (Hooks.on("preRenderItemProperties", (e, t) => {
+		ks(e, t);
+	}), Hooks.on("renderItemProperties", (e, t) => {
+		As(t);
+	}), Hooks.on("renderApplicationV2", (e, t) => {
+		Ns(e, t);
+	}), !0);
+}
+function ks(e, t) {
+	let n = Rs(e), r = zs(t);
+	if (!(!n || !r || !Ls(n.document))) {
+		n.qualities = Ds(n.qualities ?? {}), r.qualities ??= [];
+		for (let e of o) {
+			let t = c[e];
+			r.qualities.some((e) => e.key === t) || r.qualities.push({
+				existing: n.document?.originalProperties?.qualities?.[t],
+				hasValue: !1,
+				key: t,
+				name: u[e]
+			});
+		}
+	}
+}
+function As(e) {
+	if (!(e instanceof HTMLElement)) return;
+	let t = e.querySelector(".property-column");
+	if (!t) return;
+	let n = js(t);
+	if (n.length === 0) return;
+	let r = t.querySelector(`.${ws}`), i = r ?? document.createElement("div");
+	r || (i.classList.add(ws), i.append(Ms()));
+	for (let e of n) i.append(e);
+	let a = t.querySelector("input[name=\"custom-quality\"]")?.parentElement;
+	if (a) {
+		a.before(i);
+		return;
+	}
+	t.append(i);
+}
+function js(e) {
+	let t = e.querySelectorAll("input[type=\"checkbox\"]"), n = [];
+	for (let e of t) {
+		if (!Ts.has(e.name)) continue;
+		let t = e.closest(".form-group");
+		t && n.push(t);
+	}
+	return n;
+}
+function Ms() {
+	let e = document.createElement("h2");
+	return e.classList.add("property-header", `${ws}__header`), e.textContent = "Damage Type", e;
+}
+function Ns(e, t) {
+	if (!(t instanceof HTMLElement)) return;
+	let n = Rs(e);
+	if (!Ls(n?.document ?? n?.item)) return;
+	let r = Ps(t);
+	if (!r) return;
+	let i = r.querySelector(".field input");
+	if (!i) return;
+	let a = Fs(i.value);
+	a.wounding.length !== 0 && (i.value = a.normal.join(","), r.parentElement?.querySelector(`.${ws}__sheet-row`)?.remove(), r.after(Is(a.wounding)));
+}
+function Ps(e) {
+	let t = e.querySelectorAll("a[data-action=\"configureProperties\"]");
+	for (let e of t) if (e.textContent.trim().startsWith("Qualities")) return e.closest(".attribute-box") ?? void 0;
+}
+function Fs(e) {
+	let t = [], n = [], r = new Set(Object.values(u));
+	for (let i of e.split(",")) {
+		let e = i.trim();
+		if (e) {
+			if (r.has(e)) {
+				n.push(e);
+				continue;
+			}
+			t.push(e);
+		}
+	}
+	return {
+		normal: t,
+		wounding: n
+	};
+}
+function Is(e) {
+	let t = document.createElement("div");
+	t.classList.add("attribute-box", "top-label", `${ws}__sheet-row`);
+	let n = document.createElement("div");
+	n.classList.add("label"), n.style.gridColumn = "1 / span 12", n.innerHTML = "<label><a data-action=\"configureProperties\">Damage Type <i class=\"fas fa-cog\"></i></a></label>";
+	let r = document.createElement("div");
+	r.classList.add("field"), r.style.gridColumn = "1 / span 12";
+	let i = document.createElement("input");
+	return i.type = "text", i.value = e.join(","), i.readOnly = !0, r.append(i), t.append(n, r), t;
+}
+function Ls(e) {
+	return e?.type === "weapon" || e?.type === "ammunition" || e?.system?.isWeapon === !0;
+}
+function Rs(e) {
+	if (!(typeof e != "object" || !e)) return e;
+}
+function zs(e) {
+	if (typeof e != "object" || !e) return;
+	let t = e;
+	if (!(t.qualities !== void 0 && !Array.isArray(t.qualities))) return t;
+}
+//#endregion
 //#region src/module/wfrp4e/damage-qualities.ts
-function ws() {
+var Bs = !1;
+function Vs() {
 	let e = game.wfrp4e?.config;
 	if (!e) return;
-	let t = e.propertyHasValue, n = e.qualityDescriptions, r = e.weaponQualities;
-	if (!(!t || !n || !r)) for (let e of o) {
-		let i = c[e];
-		r[i] = u[e], n[i] = "Expanded Critical Hits wounding marker. A critical hit may roll on the matching expanded critical table.", t[i] = !1;
+	let t = e.propertyHasValue, n = e.qualityDescriptions;
+	if (!(!t || !n)) {
+		for (let e of o) {
+			let r = c[e];
+			n[r] = "Expanded Critical Hits damage type marker. A critical hit may roll on the matching expanded critical table.", t[r] = !1;
+		}
+		Hs(), Os();
 	}
+}
+function Hs() {
+	let e = game.wfrp4e?.utility, t = e?.qualityList;
+	Bs || !e || !t || (e.qualityList = function(e) {
+		let n = t.call(this, e);
+		return e === "armor" ? n : Ds(n);
+	}, Bs = !0);
 }
 //#endregion
 //#region src/module/wfrp4e/zero-wound-critical-links.ts
-var Ts = "data-ech-source-item-uuid", Es = "data-ech-critical-location", Ds = !1;
-function Os() {
-	Ds ||= (ks(), document.addEventListener("click", Ns, !0), !0);
+var Us = "data-ech-source-item-uuid", Ws = "data-ech-critical-location", Gs = !1;
+function Ks() {
+	Gs ||= (qs(), document.addEventListener("click", Zs, !0), !0);
 }
-function ks() {
+function qs() {
 	let e = CONFIG.Actor?.documentClass?.prototype, t = e?.applyDamage;
 	typeof t != "function" || !e || (e.applyDamage = async function(e, n = {}) {
-		let r = await t.call(this, e, n), i = As(n);
-		return typeof r != "string" || !i || !r.includes("critical-roll") ? r : Ms(r, i, js(n));
+		let r = await t.call(this, e, n), i = Js(n);
+		return typeof r != "string" || !i || !r.includes("critical-roll") ? r : Xs(r, i, Ys(n));
 	});
 }
-function As(e) {
+function Js(e) {
 	let t = ($(e.sourceItem) ?? $($(e.sourceTest)?.item) ?? $($($(e.opposedTest)?.attackerTest)?.item))?.uuid;
 	return typeof t == "string" ? t : void 0;
 }
-function js(e) {
+function Ys(e) {
 	let t = $($(e.opposedTest)?.result)?.hitloc, n = $(t)?.value, r = e.loc, i;
 	return typeof n == "string" ? i = n : typeof r == "string" && (i = r), i && te(i) ? i : void 0;
 }
-function Ms(e, t, n) {
-	let r = [`${Ts}="${Ls(t)}"`, n ? `${Es}="${Ls(n)}"` : void 0].filter(Boolean).join(" ");
+function Xs(e, t, n) {
+	let r = [`${Us}="${tc(t)}"`, n ? `${Ws}="${tc(n)}"` : void 0].filter(Boolean).join(" ");
 	return e.replaceAll(/<a\b(?![^>]*\bdata-ech-source-item-uuid=)(?=[^>]*\bcritical-roll\b)/g, `<a ${r}`);
 }
-function Ns(e) {
+function Zs(e) {
 	let t = e.target;
 	if (!(t instanceof Element) || !Fo()) return;
-	let n = t.closest(`[data-action="clickTable"][${Ts}]`);
-	!(n instanceof HTMLElement) || !Is(n.dataset.table) || (e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), Ps(n));
+	let n = t.closest(`[data-action="clickTable"][${Us}]`);
+	!(n instanceof HTMLElement) || !ec(n.dataset.table) || (e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), Qs(n));
 }
-async function Ps(e) {
+async function Qs(e) {
 	let t = e.dataset.table, n = game.wfrp4e?.tables?.formatChatRoll;
 	if (!t || typeof n != "function") return;
 	let r = e.closest("[data-message-id]")?.dataset.messageId, i = Number.parseInt(e.dataset.modifier ?? "0", 10) || 0, a = await n(t, {
-		criticalLocation: e.dataset.echCriticalLocation ?? Fs(r),
+		criticalLocation: e.dataset.echCriticalLocation ?? $s(r),
 		messageId: r,
 		modifier: i,
 		showRoll: !0,
@@ -3289,22 +3414,22 @@ async function Ps(e) {
 	let o = game.wfrp4e?.utility?.chatDataSetup, s = typeof o == "function" ? o("", game.settings.get("core", "rollMode"), !0) : { content: "" };
 	s.content = a, await ChatMessage.create(s);
 }
-function Fs(e) {
+function $s(e) {
 	if (!e) return;
 	let t = $($($(game.messages.get(e)?.system)?.test)?.result)?.hitloc, n = $(t)?.result;
 	return typeof n == "string" ? n : void 0;
 }
-function Is(e) {
+function ec(e) {
 	return typeof e == "string" && /^crit(?:head|body|arm|leg|larm|rarm|lleg|rleg)$/i.test(e);
 }
-function Ls(e) {
+function tc(e) {
 	return e.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 function $(e) {
 	return typeof e == "object" && e ? e : void 0;
 }
 Hooks.once("init", () => {
-	ds(`${e} | Initializing`), Po(), ps(), ws();
+	ds(`${e} | Initializing`), Po(), ps(), Vs();
 }), Hooks.once("ready", () => {
 	if (game.system.id !== "wfrp4e") {
 		fs(`${e} | Loaded outside ${n}; skipping module API registration.`);
@@ -3315,6 +3440,6 @@ Hooks.once("init", () => {
 		fs(`${e} | Foundry did not expose the module entry.`);
 		return;
 	}
-	t.api = us(), ys(), Os(), ds(`${e} | Ready`);
+	t.api = us(), ys(), Ks(), ds(`${e} | Ready`);
 });
 //#endregion

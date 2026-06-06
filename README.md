@@ -2,7 +2,7 @@
 
 Foundry VTT module for expanded WFRP4e critical hit handling inspired by Josef Tham's expanded critical tables.
 
-The module installs expanded critical wound Items and RollTables organized by ruleset, wounding type, and hit location. It can optionally replace WFRP4e's normal weapon critical routing so critical hits use the expanded tables when the attacking weapon has a matching `Wounding (...)` quality.
+The module installs expanded critical wound Items and RollTables organized by ruleset, damage type, and hit location. It can optionally replace WFRP4e's normal weapon critical routing so critical hits use the expanded tables when the attacking weapon has a matching `Damage Type` property.
 
 ## Installation
 
@@ -25,31 +25,31 @@ This creates module-managed world critical Items and RollTables in `Expanded Cri
 
 ## Using Expanded Critical Routing
 
-1. Add one or more `Wounding (...)` qualities to weapons.
+1. Add one or more `Damage Type` properties to weapons.
 2. Enable the world setting `Replace WFRP Critical Tables`.
 3. Roll criticals normally through WFRP4e.
 
-When replacement is enabled, weapon criticals from a weapon with a `Wounding (...)` quality route to the expanded table for the active WFRP critical ruleset and hit location.
+When replacement is enabled, weapon criticals from a weapon with a `Damage Type` property route to the expanded table for the active WFRP critical ruleset and hit location.
 
-If a weapon has no `Wounding (...)` quality, the module leaves WFRP4e's normal critical table behavior unchanged.
+If a weapon has no `Damage Type` property, the module leaves WFRP4e's normal critical table behavior unchanged.
 
-## Wounding Qualities
+## Damage Type Properties
 
-The module registers weapon qualities such as:
+The module adds weapon and ammunition item properties such as:
 
-- `Wounding (Cutting)`
-- `Wounding (Crushing)`
-- `Wounding (Piercing)`
-- `Wounding (Arrows)`
-- `Wounding (Bolts)`
-- `Wounding (Flame)`
-- `Wounding (Energy)`
-- `Wounding (Teeth)`
-- `Wounding (Claws)`
+- `Cutting`
+- `Crushing`
+- `Piercing`
+- `Arrows`
+- `Bolts`
+- `Flame`
+- `Energy`
+- `Teeth`
+- `Claws`
 
-Weapons may have more than one wounding quality. When a critical is routed through this module, one matching wounding type is chosen randomly.
+Weapons may have more than one damage type. When a critical is routed through this module, one matching damage type is chosen randomly.
 
-Some wounding qualities currently share table families. For example, `Wounding (Arrows)` and `Wounding (Bolts)` both use the Arrows/Bolts tables.
+Some damage types currently share table families. For example, `Arrows` and `Bolts` both use the Arrows/Bolts tables.
 
 ## Core And Up In Arms
 
@@ -69,7 +69,7 @@ Leg Criticals - Cutting - Up In Arms
 ## Current Limitations
 
 - Critical wound effect automation is not implemented yet.
-- GMs must assign `Wounding (...)` qualities to weapons themselves.
+- GMs must assign `Damage Type` properties to weapons themselves.
 - The module does not rebuild or replace the WFRP4e trapping list.
 - Custom user-defined damage types and table mappings are planned but not implemented yet.
 
