@@ -280,7 +280,7 @@ function ge() {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponPropertyDamageMapping.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponPropertyDamageMapping.hint",
 		scope: "world",
-		config: !0,
+		config: !1,
 		default: E,
 		type: String
 	}), game.settings.register(e, C, {
@@ -294,7 +294,7 @@ function ge() {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponTypeDamageMapping.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponTypeDamageMapping.hint",
 		scope: "world",
-		config: !0,
+		config: !1,
 		default: D,
 		type: String
 	});
