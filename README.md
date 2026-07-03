@@ -21,6 +21,7 @@ After installation, enable **WFRP4e Expanded Critical Hits** in your WFRP4e worl
 - Optional replacement of WFRP's normal critical table rolls.
 - Support for both Core and Up In Arms critical ranges.
 - Optional damage-type inference from WFRP item properties or weapon groups.
+- Optional critical hits on successful natural 1 rolls.
 
 ## Basic Usage
 
@@ -31,6 +32,14 @@ After installation, enable **WFRP4e Expanded Critical Hits** in your WFRP4e worl
 
 If a source item has no configured or inferred damage type, the roll falls through to WFRP4e's
 normal critical behavior.
+
+## Criticals On Natural 1s
+
+Enable **Criticals on Successful Natural 1s** to treat successful natural 1 rolls as criticals,
+alongside WFRP4e's normal doubles rule. This folds in the older **WFRP Crit on 1** behavior.
+
+When **Replace WFRP Critical Tables** is also enabled, those criticals can use the expanded critical
+tables. When replacement is disabled, they use WFRP4e's normal critical handling.
 
 ## Damage Inference
 

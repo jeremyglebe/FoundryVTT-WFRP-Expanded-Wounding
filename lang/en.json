@@ -8,6 +8,10 @@
         "hint": "When enabled, WFRP critical rolls can use expanded critical tables. Source items without a configured or inferred damage type use the normal WFRP tables.",
         "name": "Replace WFRP Critical Tables"
       },
+      "enableNaturalOneCriticals": {
+        "hint": "When enabled, successful natural 1 rolls count as criticals alongside WFRP's normal doubles rule.",
+        "name": "Criticals on Successful Natural 1s"
+      },
       "inferDamageFromWeaponProperties": {
         "hint": "When enabled, source items without a Damage Type property can infer a table category from WFRP item properties such as Hack, Impale, Pummel, or Slash.",
         "name": "Infer Damage Type From Item Properties"
