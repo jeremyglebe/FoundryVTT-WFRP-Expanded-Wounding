@@ -783,16 +783,16 @@ function gt(e) {
 //#endregion
 //#region src/module/wfrp4e/wounding-properties/display.ts
 var _t = !1;
-function vt() {
+function Q() {
 	_t ||= (Ze(), Hooks.on("preRenderItemProperties", (e, t) => {
-		yt(e, t);
+		vt(e, t);
 	}), Hooks.on("renderItemProperties", (e, t) => {
 		ot(t);
 	}), Hooks.on("renderApplicationV2", (e, t) => {
 		st(e, t);
 	}), !0);
 }
-function yt(e, t) {
+function vt(e, t) {
 	let n = q(e), r = We(t);
 	if (!(!n || !r || !K(n.document))) {
 		n.qualities = G(n.qualities ?? {}), r.qualities ??= [];
@@ -809,7 +809,7 @@ function yt(e, t) {
 }
 //#endregion
 //#region src/module/wfrp4e/damage-qualities.ts
-var Q = !1;
+var yt = !1;
 function bt() {
 	let e = game.wfrp4e?.config;
 	if (!e) return;
@@ -819,15 +819,15 @@ function bt() {
 			let r = p[e];
 			n[r] = "Expanded Critical Hits damage type marker. A critical hit may roll on the matching expanded critical table.", t[r] = !1;
 		}
-		xt(), vt();
+		xt(), Q();
 	}
 }
 function xt() {
 	let e = game.wfrp4e?.utility, t = e?.qualityList;
-	Q || !e || !t || (e.qualityList = function(e) {
+	yt || !e || !t || (e.qualityList = function(e) {
 		let n = t.call(this, e);
 		return e === "armor" ? n : G(n);
-	}, Q = !0);
+	}, yt = !0);
 }
 //#endregion
 //#region src/module/wfrp4e/zero-wound-critical-links.ts
@@ -897,7 +897,7 @@ function $(e) {
 //#region src/module/hooks/register-module-hooks.ts
 function It() {
 	Hooks.once("init", () => {
-		n(`${e} | Initializing`), ge(), bt();
+		n(`${e} | Initializing`), ge(), Q(), bt();
 	}), Hooks.once("ready", () => {
 		Lt();
 	});
@@ -907,7 +907,7 @@ async function Lt() {
 		r(`${e} | Loaded outside ${t}; skipping WFRP integration.`);
 		return;
 	}
-	ke(), await ve(), await c(), we(), Ne(), Tt(), n(`${e} | Ready`);
+	ke(), await ve(), bt(), await c(), we(), Ne(), Tt(), n(`${e} | Ready`);
 }
 //#endregion
 //#region src/main.ts
