@@ -5,8 +5,24 @@
     },
     "settings": {
       "enableCriticalReplacement": {
-        "hint": "When enabled, WFRP critical rolls from source items with Damage Type properties use the expanded critical tables. Source items without a Damage Type property use the normal WFRP tables.",
+        "hint": "When enabled, WFRP critical rolls can use expanded critical tables. Source items without a configured or inferred damage type use the normal WFRP tables.",
         "name": "Replace WFRP Critical Tables"
+      },
+      "inferDamageFromWeaponProperties": {
+        "hint": "When enabled, source items without a Damage Type property can infer a table category from WFRP item properties such as Hack, Impale, Pummel, or Slash.",
+        "name": "Infer Damage Type From Item Properties"
+      },
+      "inferDamageFromWeaponTypes": {
+        "hint": "When enabled, source items without a Damage Type property or matching item property can infer a table category from their weapon group or type. This is convenient but less reliable.",
+        "name": "Infer Damage Type From Weapon Type"
+      },
+      "weaponPropertyDamageMapping": {
+        "hint": "JSON map from WFRP item property keys or labels to expanded critical table categories. Valid categories: arrowsBolts, bullets, crushing, cutting, flameEnergy, piercing, shrapnelShot, sling, teethClaws, unarmed.",
+        "name": "Item Property Damage Type Mapping"
+      },
+      "weaponTypeDamageMapping": {
+        "hint": "JSON map from WFRP weapon group or type keys to expanded critical table categories. Valid categories: arrowsBolts, bullets, crushing, cutting, flameEnergy, piercing, shrapnelShot, sling, teethClaws, unarmed.",
+        "name": "Weapon Type Damage Type Mapping"
       }
     }
   }
