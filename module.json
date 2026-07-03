@@ -2,7 +2,7 @@
   "id": "wfrp4e-expanded-critical-hits",
   "title": "WFRP4e Expanded Critical Hits",
   "description": "Expanded critical hit support for the WFRP4e game system.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "authors": [
     {
       "name": "WFRP4e Expanded Critical Hits contributors"
@@ -10,7 +10,7 @@
   ],
   "compatibility": {
     "minimum": "13",
-    "verified": "14"
+    "verified": "13"
   },
   "relationships": {
     "systems": [
@@ -26,6 +26,32 @@
   "styles": [
     "styles/wfrp4e-expanded-critical-hits.css"
   ],
+  "packs": [
+    {
+      "name": "expanded-critical-wounds",
+      "label": "Items",
+      "path": "packs/expanded-critical-wounds",
+      "type": "Item",
+      "system": "wfrp4e"
+    },
+    {
+      "name": "expanded-critical-tables",
+      "label": "Tables",
+      "path": "packs/expanded-critical-tables",
+      "type": "RollTable",
+      "system": "wfrp4e"
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Expanded Criticals",
+      "sorting": "a",
+      "packs": [
+        "expanded-critical-wounds",
+        "expanded-critical-tables"
+      ]
+    }
+  ],
   "languages": [
     {
       "lang": "en",
@@ -35,5 +61,5 @@
   ],
   "url": "https://github.com/jeremyglebe/FoundryVTT-WFRP-Expanded-Wounding",
   "manifest": "https://github.com/jeremyglebe/FoundryVTT-WFRP-Expanded-Wounding/releases/latest/download/module.json",
-  "download": "https://github.com/jeremyglebe/FoundryVTT-WFRP-Expanded-Wounding/releases/download/v0.1.0/module.zip"
+  "download": "https://github.com/jeremyglebe/FoundryVTT-WFRP-Expanded-Wounding/releases/download/v0.1.1/module.zip"
 }
