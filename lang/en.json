@@ -25,11 +25,11 @@
         "name": "Infer Damage Type From Weapon Type"
       },
       "weaponPropertyDamageMapping": {
-        "hint": "JSON map from WFRP item property keys or labels to expanded critical table categories. Valid categories: arrowsBolts, bullets, crushing, cutting, flameEnergy, piercing, shrapnelShot, sling, teethClaws, unarmed.",
+        "hint": "JSON map from WFRP item property keys or labels to expanded critical table categories, or none to explicitly ignore a property. Valid categories: arrowsBolts, bullets, crushing, cutting, flameEnergy, piercing, shrapnelShot, sling, teethClaws, unarmed, none.",
         "name": "Item Property Damage Type Mapping"
       },
       "weaponTypeDamageMapping": {
-        "hint": "JSON map from WFRP weapon group or type keys to expanded critical table categories. Valid categories: arrowsBolts, bullets, crushing, cutting, flameEnergy, piercing, shrapnelShot, sling, teethClaws, unarmed.",
+        "hint": "JSON map from WFRP weapon group or type keys to expanded critical table categories, or none to explicitly ignore a weapon type. Valid categories: arrowsBolts, bullets, crushing, cutting, flameEnergy, piercing, shrapnelShot, sling, teethClaws, unarmed, none.",
         "name": "Weapon Type Damage Type Mapping"
       }
     }
