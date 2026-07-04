@@ -1,40 +1,50 @@
 //#region src/module/constants.ts
-var e = "wfrp4e-expanded-critical-hits", t = "wfrp4e";
+var e = "wfrp4e-expanded-critical-hits", t = "wfrp4e", n = "debugConsoleLogging";
 //#endregion
 //#region src/module/logging.ts
-function n(e, ...t) {
-	console.info(e, ...t);
-}
 function r(e, ...t) {
-	console.warn(e, ...t);
+	s() && console.debug(e, ...t);
 }
 function i(e, ...t) {
+	console.info(e, ...t);
+}
+function a(e, ...t) {
+	console.warn(e, ...t);
+}
+function o(e, ...t) {
 	console.error(e, ...t);
+}
+function s() {
+	try {
+		return localStorage.getItem("wfrp4e-expanded-critical-hits.debug") === "true" ? !0 : game?.settings?.settings?.has("wfrp4e-expanded-critical-hits.debugConsoleLogging") ? !!game.settings.get(e, n) : !1;
+	} catch {
+		return !1;
+	}
 }
 //#endregion
 //#region src/module/wfrp4e/critical-compendiums.ts
-var a = "expanded-critical-wounds", o = "expanded-critical-tables", s = !1;
-async function c() {
-	if (s) return;
+var c = "expanded-critical-wounds", l = "expanded-critical-tables", u = !1;
+async function d() {
+	if (u) return;
 	let t = game.wfrp4e?.tables, n = t?.findTable?.bind(t);
 	if (!t || typeof n != "function") {
-		r(`${e} | WFRP table lookup API was unavailable.`);
+		a(`${e} | WFRP table lookup API was unavailable.`);
 		return;
 	}
-	let i = await te();
-	i.size === 0 && r(`${e} | No expanded critical RollTables were found in the module pack.`), t.findTable = (e) => n(e) || i.get(e.toLowerCase()), s = !0;
+	let r = await m();
+	r.size === 0 && a(`${e} | No expanded critical RollTables were found in the module pack.`), t.findTable = (e) => n(e) || r.get(e.toLowerCase()), u = !0;
 }
-async function ee() {
+async function f() {
 	return {
-		criticalItems: await u(a, "Items"),
-		criticalTables: await u(o, "Tables")
+		criticalItems: await ee(c, "Items"),
+		criticalTables: await ee(l, "Tables")
 	};
 }
-function l(t) {
+function p(t) {
 	return `${e}.${t}`;
 }
-async function te() {
-	let e = /* @__PURE__ */ new Map(), t = game.packs.get(l(o));
+async function m() {
+	let e = /* @__PURE__ */ new Map(), t = game.packs.get(p(l));
 	if (!t) return e;
 	let n = await t.getDocuments();
 	for (let t of n) {
@@ -43,8 +53,8 @@ async function te() {
 	}
 	return e;
 }
-async function u(e, t) {
-	let n = l(e), r = game.packs.get(n);
+async function ee(e, t) {
+	let n = p(e), r = game.packs.get(n);
 	return r ? {
 		documentCount: r.index?.size ?? (await r.getDocuments()).length,
 		isAvailable: !0,
@@ -59,7 +69,7 @@ async function u(e, t) {
 }
 //#endregion
 //#region src/types/critical-hits.ts
-var d = [
+var h = [
 	"arrowsBolts",
 	"bullets",
 	"crushing",
@@ -70,7 +80,7 @@ var d = [
 	"sling",
 	"teethClaws",
 	"unarmed"
-], f = [
+], g = [
 	"arrows",
 	"bolts",
 	"bullets",
@@ -85,7 +95,7 @@ var d = [
 	"sling",
 	"teeth",
 	"unarmed"
-], ne = {
+], te = {
 	arrowsBolts: "echarrowbolt",
 	bullets: "echbullet",
 	crushing: "echcrushing",
@@ -96,7 +106,7 @@ var d = [
 	sling: "echsling",
 	teethClaws: "echteethclaws",
 	unarmed: "echunarmed"
-}, p = {
+}, _ = {
 	arrows: "echwoundingarrows",
 	bolts: "echwoundingbolts",
 	bullets: "echwoundingbullets",
@@ -111,7 +121,7 @@ var d = [
 	sling: "echwoundingsling",
 	teeth: "echwoundingteeth",
 	unarmed: "echwoundingunarmed"
-}, m = {
+}, v = {
 	arrows: "Arrows",
 	bolts: "Bolts",
 	bullets: "Bullets",
@@ -126,7 +136,7 @@ var d = [
 	sling: "Sling",
 	teeth: "Teeth",
 	unarmed: "Unarmed"
-}, re = {
+}, ne = {
 	arrows: "arrowsBolts",
 	bolts: "arrowsBolts",
 	bullets: "bullets",
@@ -141,26 +151,26 @@ var d = [
 	sling: "sling",
 	teeth: "teethClaws",
 	unarmed: "unarmed"
-}, ie = new Map(f.map((e) => [p[e], re[e]])), ae = new Map(d.map((e) => [ne[e], e]));
-function oe(e) {
+}, re = new Map(g.map((e) => [_[e], ne[e]])), ie = new Map(h.map((e) => [te[e], e]));
+function ae(e) {
 	let t = /* @__PURE__ */ new Set();
 	for (let n of e) {
-		let e = ie.get(n) ?? ae.get(n);
+		let e = re.get(n) ?? ie.get(n);
 		e && t.add(e);
 	}
-	return d.filter((e) => t.has(e));
+	return h.filter((e) => t.has(e));
 }
-function se(e, t = Math.random()) {
+function oe(e, t = Math.random()) {
 	if (e.length !== 0) return e[Math.min(Math.floor(t * e.length), e.length - 1)];
 }
 //#endregion
 //#region src/functions/critical-hits/damage-inference/index.ts
-var ce = {
+var se = {
 	hack: "cutting",
 	impale: "piercing",
 	pummel: "crushing",
 	slash: "cutting"
-}, le = {
+}, ce = {
 	basic: "cutting",
 	blackpowder: "bullets",
 	bow: "arrowsBolts",
@@ -177,20 +187,20 @@ var ce = {
 	throwing: "piercing",
 	twohanded: "cutting"
 };
-function ue(e) {
+function le(e) {
 	if (e.explicitCategories.length > 0) return {
-		categories: v(e.explicitCategories),
+		categories: pe(e.explicitCategories),
 		source: "explicit"
 	};
 	if (e.inferFromWeaponProperties) {
-		let t = _(e.weaponPropertyKeys, e.weaponPropertyMapping);
+		let t = fe(e.weaponPropertyKeys, e.weaponPropertyMapping);
 		if (t.length > 0) return {
 			categories: t,
 			source: "weaponProperty"
 		};
 	}
 	if (e.inferFromWeaponTypes) {
-		let t = _(e.weaponTypeKeys, e.weaponTypeMapping);
+		let t = fe(e.weaponTypeKeys, e.weaponTypeMapping);
 		if (t.length > 0) return {
 			categories: t,
 			source: "weaponType"
@@ -201,12 +211,12 @@ function ue(e) {
 		source: "none"
 	};
 }
-function h(e) {
+function ue(e) {
 	return e.trim().toLowerCase().replaceAll(/[^a-z0-9]/g, "");
 }
-function g(e) {
+function y(e) {
 	let t = de(e), n = {};
-	for (let [e, r] of Object.entries(t ?? {})) fe(r) && (n[h(e)] = r);
+	for (let [e, r] of Object.entries(t ?? {})) me(r) && (n[ue(e)] = r);
 	return n;
 }
 function de(e) {
@@ -217,139 +227,179 @@ function de(e) {
 	}
 	if (typeof e == "object" && e && !Array.isArray(e)) return e;
 }
-function _(e, t) {
-	let n = g(t);
-	return v(e.flatMap((e) => {
-		let t = n[h(e)];
+function fe(e, t) {
+	let n = y(t);
+	return pe(e.flatMap((e) => {
+		let t = n[ue(e)];
 		return t ? [t] : [];
 	}));
 }
-function v(e) {
+function pe(e) {
 	let t = new Set(e);
-	return d.filter((e) => t.has(e));
+	return h.filter((e) => t.has(e));
 }
-function fe(e) {
-	return typeof e == "string" && d.includes(e);
+function me(e) {
+	return typeof e == "string" && h.includes(e);
 }
 //#endregion
 //#region src/functions/critical-hits/natural-one-critical/index.ts
-function pe(e) {
+function he(e) {
 	let t = Number(e.roll), n = Number(e.target);
 	return t === 1 && t <= n;
 }
 //#endregion
 //#region src/functions/critical-hits/table-keys.ts
-function me(e, t, n) {
+function ge(e, t, n) {
 	return `ech-crit-${e}-${t}-${n}`.toLowerCase();
 }
-function y(e) {
+function b(e) {
 	let t = e.toLowerCase();
 	if (t === "head" || t === "body") return t;
 	if (t.endsWith("arm")) return "arm";
 	if (t.endsWith("leg")) return "leg";
 }
-function he(e) {
+function _e(e) {
 	return e ? "upInArms" : "core";
 }
 //#endregion
 //#region src/module/settings.ts
-var b = "enableCriticalReplacement", x = "enableNaturalOneCriticals", S = "inferDamageFromWeaponProperties", C = "inferDamageFromWeaponTypes", w = "weaponPropertyDamageMapping", T = "weaponTypeDamageMapping", E = JSON.stringify(ce), D = JSON.stringify(le);
-function ge() {
-	game.settings.register(e, b, {
+var x = "enableCriticalReplacement", S = "enableNaturalOneCriticals", C = "inferDamageFromWeaponProperties", w = "inferDamageFromWeaponTypes", T = "weaponPropertyDamageMapping", E = "weaponTypeDamageMapping", D = JSON.stringify(se), O = JSON.stringify(ce);
+function ve() {
+	game.settings.register(e, n, {
+		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.debugConsoleLogging.name",
+		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.debugConsoleLogging.hint",
+		scope: "client",
+		config: !0,
+		default: !1,
+		type: Boolean
+	}), game.settings.register(e, x, {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.enableCriticalReplacement.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.enableCriticalReplacement.hint",
 		scope: "world",
 		config: !0,
 		default: !1,
 		type: Boolean
-	}), game.settings.register(e, x, {
+	}), game.settings.register(e, S, {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.enableNaturalOneCriticals.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.enableNaturalOneCriticals.hint",
 		scope: "world",
 		config: !0,
 		default: !1,
 		type: Boolean
-	}), game.settings.register(e, S, {
+	}), game.settings.register(e, C, {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.inferDamageFromWeaponProperties.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.inferDamageFromWeaponProperties.hint",
 		scope: "world",
 		config: !0,
 		default: !0,
 		type: Boolean
-	}), game.settings.register(e, w, {
+	}), game.settings.register(e, T, {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponPropertyDamageMapping.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponPropertyDamageMapping.hint",
 		scope: "world",
 		config: !1,
-		default: E,
+		default: D,
 		type: String
-	}), game.settings.register(e, C, {
+	}), game.settings.register(e, w, {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.inferDamageFromWeaponTypes.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.inferDamageFromWeaponTypes.hint",
 		scope: "world",
 		config: !0,
 		default: !1,
 		type: Boolean
-	}), game.settings.register(e, T, {
+	}), game.settings.register(e, E, {
 		name: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponTypeDamageMapping.name",
 		hint: "WFRP4E_EXPANDED_CRITICAL_HITS.settings.weaponTypeDamageMapping.hint",
 		scope: "world",
 		config: !1,
-		default: D,
+		default: O,
 		type: String
-	});
+	}), r(`${e} | Settings registered`, A());
 }
-function O() {
-	return !!game.settings.get(e, b);
-}
-function _e() {
+function k() {
 	return !!game.settings.get(e, x);
-}
-async function ve() {
-	game.user.isGM && (await k(w, E), await k(T, D));
 }
 function ye() {
 	return !!game.settings.get(e, S);
 }
-function be() {
-	return !!game.settings.get(e, C);
-}
-function xe() {
-	return g(game.settings.get(e, w));
-}
-function Se() {
-	return g(game.settings.get(e, T));
-}
-async function k(t, n) {
-	let r = game.settings.get(e, t);
-	if (typeof r == "object" && r) {
-		await game.settings.set(e, t, JSON.stringify(r));
+async function be() {
+	if (!game.user.isGM) {
+		r(`${e} | Skipping mapping setting normalization for non-GM user.`);
 		return;
 	}
-	r === "[object Object]" && await game.settings.set(e, t, n);
+	r(`${e} | Normalizing stored mapping settings.`), await Te(T, D), await Te(E, O), r(`${e} | Mapping settings normalized`, A());
+}
+function xe() {
+	return !!game.settings.get(e, C);
+}
+function Se() {
+	return !!game.settings.get(e, w);
+}
+function Ce() {
+	return y(game.settings.get(e, T));
+}
+function we() {
+	return y(game.settings.get(e, E));
+}
+async function Te(t, n) {
+	let i = game.settings.get(e, t);
+	if (typeof i == "object" && i) {
+		r(`${e} | Normalizing object mapping setting to JSON string`, {
+			key: t,
+			value: i
+		}), await game.settings.set(e, t, JSON.stringify(i));
+		return;
+	}
+	i === "[object Object]" && (r(`${e} | Resetting invalid object-string mapping setting`, { key: t }), await game.settings.set(e, t, n));
+}
+function A() {
+	return {
+		debugConsoleLogging: j(n),
+		enableCriticalReplacement: j(x),
+		enableNaturalOneCriticals: j(S),
+		inferDamageFromWeaponProperties: j(C),
+		inferDamageFromWeaponTypes: j(w),
+		weaponPropertyDamageMapping: Ee(T),
+		weaponTypeDamageMapping: Ee(E)
+	};
+}
+function Ee(e) {
+	let t = j(e);
+	return {
+		key: e,
+		type: typeof t,
+		value: t
+	};
+}
+function j(t) {
+	try {
+		return game.settings.settings.has(`wfrp4e-expanded-critical-hits.${t}`) ? game.settings.get(e, t) : "<not registered>";
+	} catch (e) {
+		return `<error: ${e instanceof Error ? e.message : String(e)}>`;
+	}
 }
 //#endregion
 //#region src/module/wfrp4e/natural-one-critical.ts
-var A = Symbol.for(`${e}.naturalOneCriticalPatch`), j = {
+var M = Symbol.for(`${e}.naturalOneCriticalPatch`), N = {
 	installed: !1,
 	message: "Natural 1 critical patch has not run."
 };
-function Ce() {
-	return { ...j };
+function De() {
+	return { ...N };
 }
-function we() {
+function Oe() {
 	let t = game.wfrp4e?.rolls;
 	if (!t?.TestWFRP) {
-		De(!1, "WFRP4e roll classes were not available.");
+		Ne(!1, "WFRP4e roll classes were not available.");
 		return;
 	}
-	let n = Te(t.TestWFRP), i = Ee([t.WeaponTest, t.TraitTest]);
-	j = {
+	let n = ke(t.TestWFRP), r = Ae([t.WeaponTest, t.TraitTest]);
+	N = {
 		installed: n,
-		message: n ? `Natural 1 critical patch installed. Attack wrappers installed: ${i}.` : "TestWFRP.isCriticalFumble could not be patched."
-	}, n || r(`${e} | ${j.message}`);
+		message: n ? `Natural 1 critical patch installed. Attack wrappers installed: ${r}.` : "TestWFRP.isCriticalFumble could not be patched."
+	}, n || a(`${e} | ${N.message}`);
 }
-function Te(e) {
+function ke(e) {
 	let t = e.prototype;
 	if (F(t).isCriticalFumble) return !0;
 	let n = Object.getOwnPropertyDescriptor(t, "isCriticalFumble");
@@ -357,209 +407,99 @@ function Te(e) {
 		configurable: n.configurable,
 		enumerable: n.enumerable,
 		get() {
-			return M(this) ? "critical" : n.get?.call(this);
+			return P(this) ? "critical" : n.get?.call(this);
 		}
-	}), P(t, "isCriticalFumble"), !0) : !1;
+	}), Me(t, "isCriticalFumble"), !0) : !1;
 }
-function Ee(e) {
+function Ae(e) {
 	let t = 0;
 	for (let n of e) {
 		let e = n?.prototype;
 		if (!e || F(e).computeProperties) continue;
 		let r = e.computeProperties;
 		r && (e.computeProperties = function(...e) {
-			M(this) && N(this);
+			P(this) && je(this);
 			let t = r.apply(this, e);
-			return M(this) && N(this), t;
-		}, P(e, "computeProperties"), t += 1);
+			return P(this) && je(this), t;
+		}, Me(e, "computeProperties"), t += 1);
 	}
 	return t;
 }
-function M(e) {
-	return _e() && pe({
+function P(e) {
+	return ye() && he({
 		roll: e.result?.roll,
 		target: e.result?.target
 	});
 }
-function N(e) {
+function je(e) {
 	e.result && (e.result.color_green = !0, e.result.critical ||= game.i18n.localize("Critical"));
 }
-function P(e, t) {
+function Me(e, t) {
 	let n = F(e);
-	n[t] = !0, Object.defineProperty(e, A, {
+	n[t] = !0, Object.defineProperty(e, M, {
 		configurable: !0,
 		value: n
 	});
 }
 function F(e) {
-	return Object.prototype.hasOwnProperty.call(e, A) ? Reflect.get(e, A) : {};
+	return Object.prototype.hasOwnProperty.call(e, M) ? Reflect.get(e, M) : {};
 }
-function De(t, n) {
-	j = {
+function Ne(t, n) {
+	N = {
 		installed: t,
 		message: n
-	}, r(`${e} | ${n}`);
+	}, a(`${e} | ${n}`);
 }
 //#endregion
 //#region src/module/api/create-module-api.ts
-function Oe() {
+function Pe() {
 	return {
-		getExpandedCriticalsCompendiumStatus: ee,
-		getNaturalOneCriticalPatchStatus: Ce
+		getExpandedCriticalsCompendiumStatus: f,
+		getNaturalOneCriticalPatchStatus: De
 	};
 }
 //#endregion
 //#region src/module/api/register-module-api.ts
-function ke() {
+function Fe() {
 	if (!game) throw Error("Foundry game global is unavailable during module API registration.");
 	let t = game.modules.get(e);
 	if (!t) throw Error(`Foundry module registry entry was not found for ${e}.`);
-	t.api = Oe();
+	t.api = Pe();
 }
 //#endregion
-//#region src/module/wfrp4e/runtime-values.ts
+//#region src/module/wfrp4e/critical-replacement/debug.ts
 function I(e) {
-	return Array.isArray(e) ? e : [];
+	return {
+		criticalLocation: e.criticalLocation,
+		messageId: e.messageId,
+		returnResult: e.returnResult,
+		sourceItemUuid: e.sourceItemUuid
+	};
 }
-function L(e) {
+function Ie(e) {
+	let t = Le(e);
+	if (t) return {
+		id: t.id,
+		name: t.name,
+		type: t.type,
+		uuid: t.uuid
+	};
+}
+function Le(e) {
 	return typeof e == "object" && e ? e : void 0;
 }
 //#endregion
-//#region src/module/wfrp4e/quality-extraction.ts
-function Ae(e) {
-	let t = je(e);
-	return {
-		explicitCategories: oe(t),
-		weaponPropertyKeys: t,
-		weaponTypeKeys: Me(e)
-	};
-}
-function je(e) {
-	let t = L(e), n = L(t?.system), r = L(t?.properties), i = L(n?.properties), a = [L(r?.qualities), L(i?.qualities)], o = /* @__PURE__ */ new Set();
-	for (let e of a) for (let t of Object.keys(e ?? {})) o.add(t);
-	let s = I(L(n?.qualities)?.value);
-	for (let e of s) {
-		let t = L(e)?.name;
-		typeof t == "string" && o.add(t);
-	}
-	return [...o];
-}
-function Me(e) {
-	let t = L(L(e)?.system), n = /* @__PURE__ */ new Set();
-	for (let e of [
-		t?.weaponGroup,
-		t?.group,
-		t?.weaponType,
-		t?.weaponClass,
-		t?.ammunitionGroup,
-		t?.ammoGroup,
-		t?.category
-	]) R(e, n);
-	return [...n];
-}
-function R(e, t) {
-	if (typeof e == "string") {
-		t.add(e);
-		return;
-	}
-	if (Array.isArray(e)) {
-		for (let n of e) R(n, t);
-		return;
-	}
-	let n = L(e);
-	if (n) for (let e of [
-		"key",
-		"id",
-		"name",
-		"label",
-		"value",
-		"type"
-	]) R(n[e], t);
-}
-//#endregion
-//#region src/module/wfrp4e/critical-replacement.ts
-var z = !1;
-function Ne() {
-	if (z) return;
-	let e = game.wfrp4e?.tables;
-	if (!e || typeof e.findTable != "function" || typeof e.formatChatRoll != "function") return;
-	let t = e.findTable.bind(e), n = e.formatChatRoll.bind(e);
-	e.formatChatRoll = async (e, r = {}, i = null) => {
-		if (!O() || !ze(e)) return n(e, r, i);
-		let a = Le(e, r), o;
-		try {
-			o = await Re(r);
-		} catch (t) {
-			return B("Expanded Critical Hits could not resolve the critical source item. See the browser console for details.", e, t);
-		}
-		let s = se(ue({
-			...Ae(o),
-			inferFromWeaponProperties: ye(),
-			inferFromWeaponTypes: be(),
-			weaponPropertyMapping: xe(),
-			weaponTypeMapping: Se()
-		}).categories);
-		if (!a || !s) return n(e, r, i);
-		let c = me(he(!!game.settings.get("wfrp4e", "uiaCrits")), s, a);
-		if (!t(c)) return B(`Expanded Critical Hits table ${c} is missing from the module compendium.`, c);
-		try {
-			let e = await Pe(c, r, i);
-			if (e !== void 0) return e;
-		} catch (e) {
-			return B(`Expanded Critical Hits could not roll ${c}. See the browser console for details.`, c, e);
-		}
-		return B(`Expanded Critical Hits could not use WFRP's RollTable API for ${c}.`, c);
-	}, z = !0;
-}
-async function Pe(e, t, n) {
-	let r = game.wfrp4e?.tables?.rollTable;
-	if (typeof r != "function") return;
-	let i = await r.call(game.wfrp4e.tables, e, t, n);
-	if (await Fe(i, t)) return null;
-	let a = H(i);
-	return t.returnResult ? i : a?.result;
-}
-async function Fe(e, t) {
-	let n = H(H(e)?.object)?.documentUuid;
-	if (typeof n != "string") return !1;
-	let r = Ie(await fromUuid(n), t);
-	if (!r) throw Error(`Could not resolve expanded critical item ${n}.`);
-	return await r.postItem(void 0, { "flags.wfrp4e.sourceMessageId": t.messageId }), !0;
-}
-function Ie(e, t) {
-	if (!Be(e)) return;
-	let n = t.criticalLocation;
-	if (e.type !== "critical" || typeof n != "string") return e;
-	let r = e.toObject, i = Item?.implementation;
-	if (typeof r != "function" || typeof i != "function") return e;
-	let a = r.call(e), o = U(U(a, "system"), "location"), s = game.wfrp4e?.config?.locations ?? {};
-	return o.key = n, o.value = s[n] ?? n, new i(a);
-}
-function Le(e, t) {
-	let n = t.criticalLocation;
-	return y(typeof n == "string" ? n : e.replace(/^crit/i, ""));
-}
-async function Re(e) {
-	let t = e.sourceItemUuid;
-	if (typeof t == "string") return await fromUuid(t);
-	let n = e.messageId;
-	if (typeof n != "string") return;
-	let r = H(H(game.messages.get(n)?.system)?.test), i = H(r?.preData);
-	return r?.item ?? r?.weapon ?? i?.item;
-}
-function ze(e) {
-	return /^crit(?:head|body|arm|leg|larm|rarm|lleg|rleg)$/i.test(e);
-}
-function B(t, n, r) {
-	return i(`${e} | ${t}`, r), ui.notifications?.error(t), [
+//#region src/module/wfrp4e/critical-replacement/failure.ts
+function L(t, n, r) {
+	return o(`${e} | ${t}`, r), ui.notifications?.error(t), [
 		"<div class=\"wfrp4e chat-card\">",
 		"<h3>Expanded Critical Hit Failed</h3>",
-		`<p>${V(t)}</p>`,
-		`<p><strong>Table:</strong> ${V(n)}</p>`,
+		`<p>${R(t)}</p>`,
+		`<p><strong>Table:</strong> ${R(n)}</p>`,
 		"</div>"
 	].join("");
 }
-function V(e) {
+function R(e) {
 	return e.replace(/[&<>"']/g, (e) => ({
 		"&": "&amp;",
 		"<": "&lt;",
@@ -568,170 +508,449 @@ function V(e) {
 		"'": "&#39;"
 	})[e] ?? e);
 }
-function H(e) {
-	return typeof e == "object" && e ? e : void 0;
+//#endregion
+//#region src/module/wfrp4e/critical-replacement/item-posting.ts
+function Re(e, t) {
+	if (!Be(e)) return;
+	let n = t.criticalLocation;
+	if (e.type !== "critical" || typeof n != "string") return e;
+	let r = e.toObject, i = Item?.implementation;
+	if (typeof r != "function" || typeof i != "function") return e;
+	let a = r.call(e), o = z(z(a, "system"), "location"), s = game.wfrp4e?.config?.locations ?? {};
+	return o.key = n, o.value = s[n] ?? n, new i(a);
 }
-function U(e, t) {
-	let n = H(e[t]);
+function z(e, t) {
+	let n = ze(e[t]);
 	if (n) return n;
 	let r = {};
 	return e[t] = r, r;
+}
+function ze(e) {
+	return typeof e == "object" && e ? e : void 0;
 }
 function Be(e) {
 	let t = e;
 	return typeof t == "object" && !!t && typeof t.postItem == "function";
 }
 //#endregion
+//#region src/module/wfrp4e/runtime-values.ts
+function B(e) {
+	return Array.isArray(e) ? e : [];
+}
+function V(e) {
+	return typeof e == "object" && e ? e : void 0;
+}
+//#endregion
+//#region src/module/wfrp4e/quality-extraction.ts
+function Ve(e) {
+	let t = He(e);
+	return {
+		explicitCategories: ae(t),
+		weaponPropertyKeys: t,
+		weaponTypeKeys: Ue(e)
+	};
+}
+function He(e) {
+	let t = V(e), n = V(t?.system), r = V(t?.properties), i = V(n?.properties), a = [V(r?.qualities), V(i?.qualities)], o = /* @__PURE__ */ new Set();
+	for (let e of a) for (let t of Object.keys(e ?? {})) o.add(t);
+	let s = B(V(n?.qualities)?.value);
+	for (let e of s) {
+		let t = V(e)?.name;
+		typeof t == "string" && o.add(t);
+	}
+	return [...o];
+}
+function Ue(e) {
+	let t = V(V(e)?.system), n = /* @__PURE__ */ new Set();
+	for (let e of [
+		t?.weaponGroup,
+		t?.group,
+		t?.weaponType,
+		t?.weaponClass,
+		t?.ammunitionGroup,
+		t?.ammoGroup,
+		t?.category
+	]) H(e, n);
+	return [...n];
+}
+function H(e, t) {
+	if (typeof e == "string") {
+		t.add(e);
+		return;
+	}
+	if (Array.isArray(e)) {
+		for (let n of e) H(n, t);
+		return;
+	}
+	let n = V(e);
+	if (n) for (let e of [
+		"key",
+		"id",
+		"name",
+		"label",
+		"value",
+		"type"
+	]) H(n[e], t);
+}
+//#endregion
+//#region src/module/wfrp4e/critical-replacement.ts
+var U = !1;
+function We() {
+	if (U) {
+		r(`${e} | Critical replacement patch already installed.`);
+		return;
+	}
+	let t = game.wfrp4e?.tables;
+	if (!t || typeof t.findTable != "function" || typeof t.formatChatRoll != "function") {
+		r(`${e} | Critical replacement patch skipped: WFRP table API unavailable`, {
+			hasTables: !!t,
+			hasFindTable: typeof t?.findTable == "function",
+			hasFormatChatRoll: typeof t?.formatChatRoll == "function"
+		});
+		return;
+	}
+	let n = t.findTable.bind(t), i = t.formatChatRoll.bind(t);
+	t.formatChatRoll = async (t, a = {}, o = null) => {
+		let s = Ye(t);
+		if (!k() || !s) return s && r(`${e} | Critical replacement fallthrough`, {
+			table: t,
+			reason: "replacement disabled",
+			options: I(a)
+		}), i(t, a, o);
+		let c = qe(t, a), l;
+		r(`${e} | Critical replacement inspecting WFRP critical roll`, {
+			table: t,
+			location: c,
+			options: I(a)
+		});
+		try {
+			l = await Je(a);
+		} catch (e) {
+			return L("Expanded Critical Hits could not resolve the critical source item. See the browser console for details.", t, e);
+		}
+		let u = Ve(l), d = le({
+			...u,
+			inferFromWeaponProperties: xe(),
+			inferFromWeaponTypes: Se(),
+			weaponPropertyMapping: Ce(),
+			weaponTypeMapping: we()
+		}), f = oe(d.categories);
+		if (r(`${e} | Critical replacement damage category resolution`, {
+			table: t,
+			location: c,
+			sourceItem: Ie(l),
+			categoryClues: u,
+			categoryResolution: d,
+			chosenCategory: f,
+			inferFromWeaponProperties: xe(),
+			inferFromWeaponTypes: Se()
+		}), !c || !f) return r(`${e} | Critical replacement fallthrough`, {
+			table: t,
+			reason: c ? "damage category unavailable" : "location unavailable"
+		}), i(t, a, o);
+		let p = _e(!!game.settings.get("wfrp4e", "uiaCrits")), m = ge(p, f, c);
+		if (!n(m)) return L(`Expanded Critical Hits table ${m} is missing from the module compendium.`, m);
+		r(`${e} | Critical replacement rolling expanded table`, {
+			table: t,
+			expandedTableKey: m,
+			ruleset: p,
+			category: f,
+			location: c
+		});
+		try {
+			let e = await Ge(m, a, o);
+			if (e !== void 0) return e;
+		} catch (e) {
+			return L(`Expanded Critical Hits could not roll ${m}. See the browser console for details.`, m, e);
+		}
+		return L(`Expanded Critical Hits could not use WFRP's RollTable API for ${m}.`, m);
+	}, U = !0, r(`${e} | Critical replacement patch installed.`);
+}
+async function Ge(e, t, n) {
+	let r = game.wfrp4e?.tables?.rollTable;
+	if (typeof r != "function") return;
+	let i = await r.call(game.wfrp4e.tables, e, t, n);
+	if (await Ke(i, t)) return null;
+	let a = W(i);
+	return t.returnResult ? i : a?.result;
+}
+async function Ke(t, n) {
+	let i = W(W(t)?.object)?.documentUuid;
+	if (typeof i != "string") return r(`${e} | Expanded critical result had no document UUID`, { result: t }), !1;
+	let a = Re(await fromUuid(i), n);
+	if (!a) throw Error(`Could not resolve expanded critical item ${i}.`);
+	return r(`${e} | Posting expanded critical item`, {
+		documentUuid: i,
+		messageId: n.messageId,
+		criticalLocation: n.criticalLocation
+	}), await a.postItem(void 0, { "flags.wfrp4e.sourceMessageId": n.messageId }), !0;
+}
+function qe(e, t) {
+	let n = t.criticalLocation;
+	return b(typeof n == "string" ? n : e.replace(/^crit/i, ""));
+}
+async function Je(e) {
+	let t = e.sourceItemUuid;
+	if (typeof t == "string") return await fromUuid(t);
+	let n = e.messageId;
+	if (typeof n != "string") return;
+	let r = W(W(game.messages.get(n)?.system)?.test), i = W(r?.preData);
+	return r?.item ?? r?.weapon ?? i?.item;
+}
+function Ye(e) {
+	return /^crit(?:head|body|arm|leg|larm|rarm|lleg|rleg)$/i.test(e);
+}
+function W(e) {
+	return typeof e == "object" && e ? e : void 0;
+}
+//#endregion
 //#region src/module/wfrp4e/wounding-properties/support.ts
-var W = "ech-wounding-properties", Ve = new Set(Object.values(p));
-function G(e) {
+var G = "ech-wounding-properties", Xe = new Set(Object.values(_));
+function Ze(e) {
 	let t = { ...e };
-	for (let e of f) t[p[e]] = m[e];
+	for (let e of g) t[_[e]] = v[e];
 	return t;
 }
 function K(e) {
-	return Ge(e) || Ke(e);
+	return nt(e) || rt(e);
 }
-function He(e) {
+function Qe(e) {
 	return e?.type === "spell" || e?.type === "prayer";
 }
-function Ue(e) {
-	let t = I(L(L(e?.system)?.qualities)?.value), n = [];
+function $e(e) {
+	let t = B(V(V(e?.system)?.qualities)?.value), n = [];
 	for (let e of t) {
-		let t = L(e)?.name;
+		let t = V(e)?.name;
 		if (typeof t != "string") continue;
-		let r = Je(t);
-		r && n.push(m[r]);
+		let r = ot(t);
+		r && n.push(v[r]);
 	}
 	return n;
 }
-function q(e) {
+function et(e) {
 	if (!(typeof e != "object" || !e)) return e;
 }
-function We(e) {
+function tt(e) {
 	if (typeof e != "object" || !e) return;
 	let t = e;
 	if (!(t.qualities !== void 0 && !Array.isArray(t.qualities))) return t;
 }
-function Ge(e) {
+function nt(e) {
 	return e?.type === "weapon" || e?.type === "ammunition" || e?.system?.isWeapon === !0;
 }
-function Ke(e) {
-	return (e?.type === "spell" || e?.type === "prayer") && qe(e.system);
+function rt(e) {
+	return (e?.type === "spell" || e?.type === "prayer") && it(e.system);
 }
-function qe(e) {
-	let t = L(e?.damage), n = L(e?.magicMissile);
-	return J(t?.value) || J(t?.dice) || t?.addSL === !0 || n?.value === !0;
+function it(e) {
+	let t = V(e?.damage), n = V(e?.magicMissile);
+	return at(t?.value) || at(t?.dice) || t?.addSL === !0 || n?.value === !0;
 }
-function J(e) {
+function at(e) {
 	return typeof e == "number" ? e !== 0 : typeof e == "string" && e.trim().length > 0;
 }
-function Je(e) {
-	return f.find((t) => p[t] === e);
+function ot(e) {
+	return g.find((t) => _[t] === e);
 }
 //#endregion
 //#region src/module/wfrp4e/wounding-properties/actions.ts
-var Ye = `.${W}__sheet-row a[data-ech-action="configureProperties"]`, Y = /* @__PURE__ */ new Map(), Xe = !1;
-function Ze() {
-	Xe ||= (document.addEventListener("click", et, !0), !0);
+var st = `.${G}__sheet-row a[data-ech-action="configureProperties"]`, ct = /* @__PURE__ */ new Map(), lt = !1;
+function ut() {
+	lt ||= (document.addEventListener("click", pt, !0), !0);
 }
-function Qe(e) {
+function dt(e) {
 	return e?.uuid;
 }
-function $e(e, t) {
-	Y.set(e, t);
+function ft(e, t) {
+	ct.set(e, t);
 }
-function X(e) {
-	let t = rt();
+function q(e) {
+	let t = gt();
 	!e || !t || new t(e).render(!0);
 }
-function et(e) {
-	let t = tt(e.target);
-	t && (e.preventDefault(), e.stopPropagation(), nt(t));
+function pt(e) {
+	let t = mt(e.target);
+	t && (e.preventDefault(), e.stopPropagation(), ht(t));
 }
-function tt(e) {
-	if (e instanceof Element) return e.closest(Ye) ?? void 0;
+function mt(e) {
+	if (e instanceof Element) return e.closest(st) ?? void 0;
 }
-async function nt(e) {
-	let t = e.closest(`.${W}__sheet-row`)?.dataset.echItemUuid;
+async function ht(e) {
+	let t = e.closest(`.${G}__sheet-row`)?.dataset.echItemUuid;
 	if (!t) return;
 	let n = await fromUuid(t);
-	if (!at(n)) return;
-	let r = Y.get(t);
+	if (!vt(n)) return;
+	let r = ct.get(t);
 	if (r) {
 		r(n);
 		return;
 	}
-	X(n);
+	q(n);
 }
-function rt() {
+function gt() {
 	let e = game.wfrp4e?.apps?.ItemProperties;
-	if (it(e)) return e;
+	if (_t(e)) return e;
 }
-function it(e) {
+function _t(e) {
 	return typeof e == "function";
 }
-function at(e) {
+function vt(e) {
 	return typeof e == "object" && !!e;
 }
 //#endregion
+//#region src/module/wfrp4e/wounding-properties/debug.ts
+function J(e) {
+	if (!(typeof e != "object" || !e)) return e.constructor?.name;
+}
+function Y(e) {
+	if (e) return {
+		id: e.id,
+		name: e.name,
+		type: e.type,
+		uuid: e.uuid
+	};
+}
+//#endregion
+//#region src/module/wfrp4e/wounding-properties/sheet-box.ts
+function yt(e, t, n) {
+	let r = document.createElement("div");
+	r.classList.add("attribute-box", "top-label", `${G}__sheet-row`);
+	let i = dt(n);
+	i && (r.dataset.echItemUuid = i, ft(i, xt(e, n)));
+	let a = document.createElement("div");
+	a.classList.add("label"), a.style.gridColumn = "1 / span 12", a.innerHTML = "<label><a data-ech-action=\"configureProperties\">Damage Type <i class=\"fas fa-cog\"></i></a></label>";
+	let o = document.createElement("div");
+	o.classList.add("field"), o.style.gridColumn = "1 / span 12";
+	let s = document.createElement("input");
+	return s.type = "text", s.value = t.join(","), s.readOnly = !0, o.append(s), r.append(a, o), bt(r, n), r;
+}
+function bt(e, t) {
+	e.querySelector("a[data-ech-action=\"configureProperties\"]")?.addEventListener("click", (e) => {
+		e.preventDefault(), q(t);
+	});
+}
+function xt(e, t) {
+	return St(e) || ((e) => {
+		q(e ?? t);
+	});
+}
+function St(e) {
+	if (typeof e != "object" || !e) return;
+	let t = e.constructor?.DEFAULT_OPTIONS?.actions?.configureProperties;
+	if (typeof t == "function") return (e) => {
+		t.call({ document: e });
+	};
+}
+//#endregion
 //#region src/module/wfrp4e/wounding-properties/sheet.ts
-function ot(e) {
-	if (!(e instanceof HTMLElement)) return;
-	let t = e.querySelector(".property-column");
-	if (!t) return;
-	let n = ct(t);
-	if (n.length === 0) return;
-	let r = t.querySelector(`.${W}`), i = r ?? document.createElement("div");
-	r || (i.classList.add(W), i.append(lt()));
-	for (let e of n) i.append(e);
-	let a = t.querySelector("input[name=\"custom-quality\"]")?.parentElement;
-	if (a) {
-		a.before(i);
+function Ct(t) {
+	if (!(t instanceof HTMLElement)) {
+		r(`${e} | ItemProperties render hook skipped: element is not HTMLElement`, { elementType: typeof t });
 		return;
 	}
-	t.append(i);
-}
-function st(e, t) {
-	if (!(t instanceof HTMLElement)) return;
-	let n = q(e), r = n?.document ?? n?.item;
-	if (!K(r)) return;
-	let i = dt(t);
-	if (!i) {
-		ut(e, t, r);
+	let n = t.querySelector(".property-column");
+	if (!n) {
+		r(`${e} | ItemProperties render hook skipped: quality column not found.`);
 		return;
 	}
-	let a = i.querySelector(".field input");
-	if (!a) return;
-	let o = ft(a.value);
-	o.wounding.length !== 0 && (a.value = o.normal.join(","), i.parentElement?.querySelector(`.${W}__sheet-row`)?.remove(), i.after(Z(e, o.wounding, r)));
+	let i = Tt(n);
+	if (i.length === 0) {
+		r(`${e} | ItemProperties render hook found no damage type rows`, { checkboxCount: n.querySelectorAll("input[type=\"checkbox\"]").length });
+		return;
+	}
+	r(`${e} | Grouping ItemProperties damage type rows`, { woundingRowCount: i.length });
+	let a = n.querySelector(`.${G}`), o = a ?? document.createElement("div");
+	a || (o.classList.add(G), o.append(Et()));
+	for (let e of i) o.append(e);
+	let s = n.querySelector("input[name=\"custom-quality\"]")?.parentElement;
+	if (s) {
+		s.before(o);
+		return;
+	}
+	n.append(o);
 }
-function ct(e) {
+function wt(t, n) {
+	if (!(n instanceof HTMLElement)) {
+		r(`${e} | Item sheet render hook skipped: element is not HTMLElement`, {
+			applicationName: J(t),
+			elementType: typeof n
+		});
+		return;
+	}
+	let i = et(t), a = i?.document ?? i?.item;
+	if (!K(a)) {
+		r(`${e} | Item sheet render hook skipped: unsupported document`, {
+			applicationName: J(t),
+			document: Y(a)
+		});
+		return;
+	}
+	r(`${e} | Item sheet render hook inspecting supported document`, {
+		applicationName: J(t),
+		document: Y(a)
+	});
+	let o = Ot(n);
+	if (!o) {
+		r(`${e} | Item sheet qualities box not found; trying standalone damage row`, { document: Y(a) }), Dt(t, n, a);
+		return;
+	}
+	let s = o.querySelector(".field input");
+	if (!s) {
+		r(`${e} | Item sheet qualities input not found`, { document: Y(a) });
+		return;
+	}
+	let c = kt(s.value);
+	if (c.wounding.length === 0) {
+		r(`${e} | Item sheet qualities contain no damage type labels`, {
+			document: Y(a),
+			displayedQualities: s.value
+		});
+		return;
+	}
+	r(`${e} | Splitting item sheet damage type labels into their own row`, {
+		document: Y(a),
+		normalQualities: c.normal,
+		woundingQualities: c.wounding
+	}), s.value = c.normal.join(","), o.parentElement?.querySelector(`.${G}__sheet-row`)?.remove(), o.after(yt(t, c.wounding, a));
+}
+function Tt(e) {
 	let t = e.querySelectorAll("input[type=\"checkbox\"]"), n = [];
 	for (let e of t) {
-		if (!Ve.has(e.name)) continue;
+		if (!Xe.has(e.name)) continue;
 		let t = e.closest(".form-group");
 		t && n.push(t);
 	}
 	return n;
 }
-function lt() {
+function Et() {
 	let e = document.createElement("h2");
-	return e.classList.add("property-header", `${W}__header`), e.textContent = "Damage Type", e;
+	return e.classList.add("property-header", `${G}__header`), e.textContent = "Damage Type", e;
 }
-function ut(e, t, n) {
-	if (!He(n) || t.querySelector(".ech-wounding-properties__sheet-row")) return;
-	let r = gt(t);
-	if (!r) return;
-	let i = Ue(n);
-	r.after(Z(e, i, n));
+function Dt(t, n, i) {
+	if (!Qe(i)) {
+		r(`${e} | Standalone damage type row skipped: unsupported document`, { document: Y(i) });
+		return;
+	}
+	if (n.querySelector(".ech-wounding-properties__sheet-row")) {
+		r(`${e} | Standalone damage type row skipped: row already exists`, { document: Y(i) });
+		return;
+	}
+	let a = At(n);
+	if (!a) {
+		r(`${e} | Standalone damage type row skipped: damage fieldset not found`, { document: Y(i) });
+		return;
+	}
+	let o = $e(i);
+	r(`${e} | Appending standalone damage type row`, {
+		document: Y(i),
+		labels: o
+	}), a.after(yt(t, o, i));
 }
-function dt(e) {
+function Ot(e) {
 	let t = e.querySelectorAll("a[data-action=\"configureProperties\"]");
 	for (let e of t) if (e.textContent.trim().startsWith("Qualities")) return e.closest(".attribute-box") ?? void 0;
 }
-function ft(e) {
-	let t = [], n = [], r = new Set(Object.values(m));
+function kt(e) {
+	let t = [], n = [], r = new Set(Object.values(v));
 	for (let i of e.split(",")) {
 		let e = i.trim();
 		if (e) {
@@ -747,126 +966,150 @@ function ft(e) {
 		wounding: n
 	};
 }
-function Z(e, t, n) {
-	let r = document.createElement("div");
-	r.classList.add("attribute-box", "top-label", `${W}__sheet-row`);
-	let i = Qe(n);
-	i && (r.dataset.echItemUuid = i, $e(i, mt(e, n)));
-	let a = document.createElement("div");
-	a.classList.add("label"), a.style.gridColumn = "1 / span 12", a.innerHTML = "<label><a data-ech-action=\"configureProperties\">Damage Type <i class=\"fas fa-cog\"></i></a></label>";
-	let o = document.createElement("div");
-	o.classList.add("field"), o.style.gridColumn = "1 / span 12";
-	let s = document.createElement("input");
-	return s.type = "text", s.value = t.join(","), s.readOnly = !0, o.append(s), r.append(a, o), pt(r, n), r;
-}
-function pt(e, t) {
-	e.querySelector("a[data-ech-action=\"configureProperties\"]")?.addEventListener("click", (e) => {
-		e.preventDefault(), X(t);
-	});
-}
-function mt(e, t) {
-	return ht(e) || ((e) => {
-		X(e ?? t);
-	});
-}
-function ht(e) {
-	if (typeof e != "object" || !e) return;
-	let t = e.constructor?.DEFAULT_OPTIONS?.actions?.configureProperties;
-	if (typeof t == "function") return (e) => {
-		t.call({ document: e });
-	};
-}
-function gt(e) {
+function At(e) {
 	let t = e.querySelectorAll("fieldset");
 	for (let e of t) if (e.querySelector("legend")?.textContent.trim() === "Damage") return e;
 }
 //#endregion
 //#region src/module/wfrp4e/wounding-properties/display.ts
-var _t = !1;
-function Q() {
-	_t ||= (Ze(), Hooks.on("preRenderItemProperties", (e, t) => {
-		vt(e, t);
-	}), Hooks.on("renderItemProperties", (e, t) => {
-		ot(t);
-	}), Hooks.on("renderApplicationV2", (e, t) => {
-		st(e, t);
-	}), !0);
-}
-function vt(e, t) {
-	let n = q(e), r = We(t);
-	if (!(!n || !r || !K(n.document))) {
-		n.qualities = G(n.qualities ?? {}), r.qualities ??= [];
-		for (let e of f) {
-			let t = p[e];
-			r.qualities.some((e) => e.key === t) || r.qualities.push({
-				existing: n.document?.originalProperties?.qualities?.[t],
-				hasValue: !1,
-				key: t,
-				name: m[e]
-			});
-		}
+var jt = !1;
+function Mt() {
+	if (jt) {
+		r(`${e} | Wounding property display hooks already installed.`);
+		return;
 	}
+	ut(), Hooks.on("preRenderItemProperties", (e, t) => {
+		Nt(e, t);
+	}), Hooks.on("renderItemProperties", (e, t) => {
+		Ct(t);
+	}), Hooks.on("renderApplicationV2", (e, t) => {
+		wt(e, t);
+	}), jt = !0, r(`${e} | Wounding property display hooks installed.`);
+}
+function Nt(t, n) {
+	let i = et(t), a = tt(n), o = i?.document;
+	if (!i || !a || !K(o)) {
+		r(`${e} | Skipping ItemProperties damage type context append`, {
+			applicationName: Pt(t),
+			hasItemProperties: !!i,
+			hasRenderContext: !!a,
+			document: X(o),
+			supportsDamageTypeProperties: K(o)
+		});
+		return;
+	}
+	r(`${e} | Appending damage types to ItemProperties context`, {
+		applicationName: Pt(t),
+		document: X(o),
+		originalQualityCount: Object.keys(i.qualities ?? {}).length,
+		renderedQualityCount: a.qualities?.length ?? 0
+	}), i.qualities = Ze(i.qualities ?? {}), a.qualities ??= [];
+	for (let e of g) {
+		let t = _[e];
+		a.qualities.some((e) => e.key === t) || a.qualities.push({
+			existing: i.document?.originalProperties?.qualities?.[t],
+			hasValue: !1,
+			key: t,
+			name: v[e]
+		});
+	}
+	r(`${e} | ItemProperties context after damage type append`, {
+		document: X(o),
+		renderedQualityCount: a.qualities.length
+	});
+}
+function Pt(e) {
+	if (!(typeof e != "object" || !e)) return e.constructor?.name;
+}
+function X(e) {
+	if (typeof e != "object" || !e) return;
+	let t = e;
+	return {
+		id: t.id,
+		name: t.name,
+		type: t.type,
+		uuid: t.uuid
+	};
 }
 //#endregion
 //#region src/module/wfrp4e/damage-qualities.ts
-var yt = !1;
-function bt() {
-	let e = game.wfrp4e?.config;
-	if (!e) return;
-	let t = e.propertyHasValue, n = e.qualityDescriptions;
-	if (!(!t || !n)) {
-		for (let e of f) {
-			let r = p[e];
-			n[r] = "Expanded Critical Hits damage type marker. A critical hit may roll on the matching expanded critical table.", t[r] = !1;
-		}
-		xt(), Q();
+var Z = !1;
+function Q() {
+	let t = game.wfrp4e?.config;
+	if (!t) {
+		r(`${e} | Damage quality registration skipped: WFRP config unavailable.`);
+		return;
 	}
+	let n = t.propertyHasValue, i = t.qualityDescriptions;
+	if (!n || !i) {
+		r(`${e} | Damage quality registration skipped: WFRP property config missing`, {
+			hasPropertyHasValue: !!n,
+			hasQualityDescriptions: !!i
+		});
+		return;
+	}
+	for (let e of g) {
+		let t = _[e];
+		i[t] = "Expanded Critical Hits damage type marker. A critical hit may roll on the matching expanded critical table.", n[t] = !1;
+	}
+	r(`${e} | Damage qualities registered`, {
+		count: g.length,
+		qualityKeys: g.map((e) => _[e])
+	}), Ft(), Mt();
 }
-function xt() {
-	let e = game.wfrp4e?.utility, t = e?.qualityList;
-	yt || !e || !t || (e.qualityList = function(e) {
-		let n = t.call(this, e);
-		return e === "armor" ? n : G(n);
-	}, yt = !0);
+function Ft() {
+	let t = game.wfrp4e?.utility, n = t?.qualityList;
+	if (Z || !t || !n) {
+		r(`${e} | Quality list patch skipped`, {
+			qualityListPatchInstalled: Z,
+			hasUtility: !!t,
+			hasOriginalQualityList: !!n
+		});
+		return;
+	}
+	t.qualityList = function(e) {
+		let t = n.call(this, e);
+		return e === "armor" ? t : Ze(t);
+	}, Z = !0, r(`${e} | Quality list patch installed.`);
 }
 //#endregion
 //#region src/module/wfrp4e/zero-wound-critical-links.ts
-var St = "data-ech-source-item-uuid", Ct = "data-ech-critical-location", wt = !1;
-function Tt() {
-	wt ||= (Et(), document.addEventListener("click", At, !0), !0);
+var It = "data-ech-source-item-uuid", Lt = "data-ech-critical-location", Rt = !1;
+function zt() {
+	Rt ||= (Bt(), document.addEventListener("click", Wt, !0), !0);
 }
-function Et() {
+function Bt() {
 	let e = CONFIG.Actor?.documentClass?.prototype, t = e?.applyDamage;
 	typeof t != "function" || !e || (e.applyDamage = async function(e, n = {}) {
-		let r = await t.call(this, e, n), i = Dt(n);
-		return typeof r != "string" || !i || !r.includes("critical-roll") ? r : kt(r, i, Ot(n));
+		let r = await t.call(this, e, n), i = Vt(n);
+		return typeof r != "string" || !i || !r.includes("critical-roll") ? r : Ut(r, i, Ht(n));
 	});
 }
-function Dt(e) {
+function Vt(e) {
 	let t = $($(e.sourceTest)?.item), n = $($($(e.opposedTest)?.attackerTest)?.item), r = $(e.sourceItem), i = t?.uuid ?? n?.uuid ?? r?.uuid;
 	return typeof i == "string" ? i : void 0;
 }
-function Ot(e) {
+function Ht(e) {
 	let t = $($(e.opposedTest)?.result)?.hitloc, n = $(t)?.value, r = e.loc, i;
-	return typeof n == "string" ? i = n : typeof r == "string" && (i = r), i && y(i) ? i : void 0;
+	return typeof n == "string" ? i = n : typeof r == "string" && (i = r), i && b(i) ? i : void 0;
 }
-function kt(e, t, n) {
-	let r = [`${St}="${Ft(t)}"`, n ? `${Ct}="${Ft(n)}"` : void 0].filter(Boolean).join(" ");
+function Ut(e, t, n) {
+	let r = [`${It}="${Yt(t)}"`, n ? `${Lt}="${Yt(n)}"` : void 0].filter(Boolean).join(" ");
 	return e.replaceAll(/<a\b(?![^>]*\bdata-ech-source-item-uuid=)(?=[^>]*\bcritical-roll\b)/g, `<a ${r}`);
 }
-function At(e) {
+function Wt(e) {
 	let t = e.target;
-	if (!(t instanceof Element) || !O()) return;
-	let n = t.closest(`[data-action="clickTable"][${St}]`);
-	!(n instanceof HTMLElement) || !Pt(n.dataset.table) || (e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), jt(n).catch((e) => {
-		Mt("Expanded Critical Hits could not roll an annotated zero-wound critical. See the browser console for details.", e);
+	if (!(t instanceof Element) || !k()) return;
+	let n = t.closest(`[data-action="clickTable"][${It}]`);
+	!(n instanceof HTMLElement) || !Jt(n.dataset.table) || (e.preventDefault(), e.stopPropagation(), e.stopImmediatePropagation(), Gt(n).catch((e) => {
+		Kt("Expanded Critical Hits could not roll an annotated zero-wound critical. See the browser console for details.", e);
 	}));
 }
-async function jt(e) {
+async function Gt(e) {
 	let t = e.dataset.table, n = game.wfrp4e?.tables?.formatChatRoll;
 	if (!t || typeof n != "function") return;
 	let r = e.closest("[data-message-id]")?.dataset.messageId, i = Number.parseInt(e.dataset.modifier ?? "0", 10) || 0, a = await n(t, {
-		criticalLocation: e.dataset.echCriticalLocation ?? Nt(r),
+		criticalLocation: e.dataset.echCriticalLocation ?? qt(r),
 		messageId: r,
 		modifier: i,
 		showRoll: !0,
@@ -876,18 +1119,18 @@ async function jt(e) {
 	let o = game.wfrp4e?.utility?.chatDataSetup, s = typeof o == "function" ? o("", game.settings.get("core", "rollMode"), !0) : { content: "" };
 	s.content = a, await ChatMessage.create(s);
 }
-function Mt(t, n) {
-	i(`${e} | ${t}`, n), ui.notifications?.error(t);
+function Kt(t, n) {
+	o(`${e} | ${t}`, n), ui.notifications?.error(t);
 }
-function Nt(e) {
+function qt(e) {
 	if (!e) return;
 	let t = $($($(game.messages.get(e)?.system)?.test)?.result)?.hitloc, n = $(t)?.result;
 	return typeof n == "string" ? n : void 0;
 }
-function Pt(e) {
+function Jt(e) {
 	return typeof e == "string" && /^crit(?:head|body|arm|leg|larm|rarm|lleg|rleg)$/i.test(e);
 }
-function Ft(e) {
+function Yt(e) {
 	return e.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 function $(e) {
@@ -895,23 +1138,34 @@ function $(e) {
 }
 //#endregion
 //#region src/module/hooks/register-module-hooks.ts
-function It() {
+function Xt() {
 	Hooks.once("init", () => {
-		n(`${e} | Initializing`), ge(), Q(), bt();
+		i(`${e} | Initializing`), ve(), r(`${e} | init hook running`, {
+			foundryVersion: game.version,
+			systemId: game.system?.id,
+			userIsGM: game.user?.isGM
+		}), Mt(), Q();
 	}), Hooks.once("ready", () => {
-		Lt();
+		Zt();
 	});
 }
-async function Lt() {
-	if (game.system.id !== "wfrp4e") {
-		r(`${e} | Loaded outside ${t}; skipping WFRP integration.`);
+async function Zt() {
+	if (r(`${e} | ready hook running`, {
+		foundryVersion: game.version,
+		systemId: game.system?.id,
+		userIsGM: game.user?.isGM,
+		settings: A(),
+		wfrpConfigAvailable: !!game.wfrp4e?.config,
+		wfrpTablesAvailable: !!game.wfrp4e?.tables
+	}), game.system.id !== "wfrp4e") {
+		a(`${e} | Loaded outside ${t}; skipping WFRP integration.`);
 		return;
 	}
-	ke(), await ve(), bt(), await c(), we(), Ne(), Tt(), n(`${e} | Ready`);
+	Fe(), await be(), r(`${e} | ready hook after mapping normalization`, { settings: A() }), Q(), await d(), Oe(), We(), zt(), i(`${e} | Ready`);
 }
 //#endregion
 //#region src/main.ts
-It();
+Xt();
 //#endregion
 
 //# sourceMappingURL=wfrp4e-expanded-critical-hits.mjs.map

@@ -4,6 +4,10 @@
       "Title": "WFRP4e Expanded Critical Hits"
     },
     "settings": {
+      "debugConsoleLogging": {
+        "hint": "When enabled, writes diagnostic information to the browser console for troubleshooting. No chat or UI messages are created.",
+        "name": "Debug Console Logging"
+      },
       "enableCriticalReplacement": {
         "hint": "When enabled, WFRP critical rolls can use expanded critical tables. Source items without a configured or inferred damage type use the normal WFRP tables.",
         "name": "Replace WFRP Critical Tables"
