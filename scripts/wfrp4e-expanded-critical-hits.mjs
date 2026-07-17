@@ -32,7 +32,7 @@ async function d() {
 		return;
 	}
 	let r = await m();
-	r.size === 0 && a(`${e} | No expanded critical RollTables were found in the module pack.`), t.findTable = (e) => n(e) || r.get(e.toLowerCase()), u = !0;
+	r.size === 0 && a(`${e} | No expanded critical RollTables were found in the module pack.`), t.findTable = (e, t) => n(e, t) || r.get(e.toLowerCase()), u = !0;
 }
 async function f() {
 	return {
