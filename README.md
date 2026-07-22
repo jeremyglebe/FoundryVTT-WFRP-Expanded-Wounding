@@ -22,6 +22,7 @@ After installation, enable **WFRP4e Expanded Critical Hits** in your WFRP4e worl
 - Support for both Core and Up In Arms critical ranges.
 - Optional damage-type inference from WFRP item properties or weapon groups.
 - Optional critical hits on successful natural 1 rolls.
+- A GM damage console that posts reusable WFRP-style damage cards to chat.
 
 ## Basic Usage
 
@@ -32,6 +33,23 @@ After installation, enable **WFRP4e Expanded Critical Hits** in your WFRP4e worl
 
 If a source item has no configured or inferred damage type, the roll falls through to WFRP4e's
 normal critical behavior.
+
+## Damage Console
+
+Select one or more token targets, open the Token Controls palette, and choose **Damage Console**.
+Set the damage formula, hit location, reduction options, and optional expanded wounding type, then
+choose **Post**. The resulting chat card does not change any Actor until a GM chooses **Apply
+Damage** for that target.
+
+Damage is resolved through WFRP4e's normal damage API. If it reduces the target to 0 Wounds, the
+result includes WFRP's normal critical link. When an expanded wounding type was selected and
+**Replace WFRP Critical Tables** is enabled, that link uses the matching expanded table.
+
+Macros and other modules can launch the same console through the module API:
+
+```js
+await game.modules.get("wfrp4e-expanded-critical-hits").api.launchDamageConsole();
+```
 
 ## Criticals On Natural 1s
 

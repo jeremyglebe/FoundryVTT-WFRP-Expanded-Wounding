@@ -3,6 +3,50 @@
     "Preview": {
       "Title": "WFRP4e Expanded Critical Hits"
     },
+    "damageConsole": {
+      "applyDamage": "Apply Damage",
+      "cancel": "Cancel",
+      "cardTitle": "Damage",
+      "damage": "Damage",
+      "damageDetails": "Damage Details",
+      "damageHint": "Enter a whole number or a Roll formula. The formula is rolled separately when damage is applied to each target.",
+      "damageOptions": "Ignore Damage Reduction",
+      "errors": {
+        "alreadyApplied": "Damage has already been applied to {name}.",
+        "cardTargetUnavailable": "That target is no longer part of this damage card.",
+        "cardUnavailable": "This damage card is no longer available.",
+        "damageApiUnavailable": "The WFRP4e damage API is unavailable.",
+        "damageNotApplied": "WFRP4e did not return a damage result.",
+        "gmOnly": "Only a GM can use the damage console.",
+        "hitLocationFailed": "The target's hit-location table did not return a location.",
+        "invalidFormula": "{formula} is not a valid non-negative, whole-number damage formula.",
+        "targetUnavailable": "The damage target {uuid} is no longer available.",
+        "targetsRequired": "Target at least one token before opening the damage console."
+      },
+      "hitLocation": "Hit Location",
+      "ignoreArmour": "Armour",
+      "ignoreToughness": "Toughness Bonus",
+      "ignores": "Ignores",
+      "minimumOne": "Minimum 1 Damage",
+      "no": "No",
+      "none": "None",
+      "post": "Post",
+      "postHint": "Posting creates a chat card. No damage is applied until its Apply Damage button is used.",
+      "rolled": "Rolled",
+      "sceneControl": "Damage Console",
+      "targets": "Targets",
+      "title": "Damage Console",
+      "unspecified": "Unspecified (normal critical table)",
+      "validation": {
+        "damageFormulaRequired": "Enter a damage value or Roll formula.",
+        "hitLocationInvalid": "Choose a valid hit location.",
+        "targetsRequired": "At least one target is required.",
+        "woundingTypeInvalid": "Choose a valid wounding type."
+      },
+      "woundingType": "Wounding Type",
+      "woundingTypeHint": "When expanded critical replacement is enabled, this chooses the critical table family.",
+      "yes": "Yes"
+    },
     "settings": {
       "debugConsoleLogging": {
         "hint": "When enabled, writes diagnostic information to the browser console for troubleshooting. No chat or UI messages are created.",
