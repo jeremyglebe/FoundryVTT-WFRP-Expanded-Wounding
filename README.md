@@ -42,7 +42,8 @@ choose **Post**. The resulting chat card does not change any Actor until a GM ch
 Damage** for that target. Choose **Roll Damage** for a target first to resolve and display its
 damage; the **Apply Damage** button then appears and uses that stored result. The console can roll
 damage separately for each target or make one shared roll, but damage is always applied to each
-target individually.
+target individually. Damage rolls are published through Foundry's normal Roll chat flow so dice
+visualization and other roll-aware modules can respond to them.
 
 Damage is resolved through WFRP4e's normal damage API. If it reduces the target to 0 Wounds, the
 result includes WFRP's normal critical link. When an expanded wounding type was selected and

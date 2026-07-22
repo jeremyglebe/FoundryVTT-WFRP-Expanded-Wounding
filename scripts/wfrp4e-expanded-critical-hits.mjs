@@ -517,17 +517,21 @@ async function Ue(e, t) {
 	};
 }
 async function We(e) {
-	return {
-		damage: await Ge(e.damageFormula),
+	let { damage: t, roll: n } = await Ge(e.damageFormula);
+	return await n.toMessage({ flavor: game.i18n.localize("WFRP4E_EXPANDED_CRITICAL_HITS.damageConsole.title") }), {
+		damage: t,
 		rolledAt: Date.now(),
 		rolledBy: game.user.name
 	};
 }
 async function Ge(e) {
 	try {
-		let t = await new Roll(e).evaluate(), n = Number(t.total);
+		let t = await Roll.create(e).evaluate(), n = Number(t.total);
 		if (!Number.isInteger(n) || n < 0) throw Error("Damage must resolve to a non-negative whole number.");
-		return n;
+		return {
+			damage: n,
+			roll: t
+		};
 	} catch (t) {
 		throw Error(game.i18n.format("WFRP4E_EXPANDED_CRITICAL_HITS.damageConsole.errors.invalidFormula", { formula: e }), { cause: t });
 	}
