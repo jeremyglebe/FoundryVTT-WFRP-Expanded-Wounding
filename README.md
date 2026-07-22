@@ -39,7 +39,10 @@ normal critical behavior.
 Select one or more token targets, open the Token Controls palette, and choose **Damage Console**.
 Set the damage formula, hit location, reduction options, and optional expanded wounding type, then
 choose **Post**. The resulting chat card does not change any Actor until a GM chooses **Apply
-Damage** for that target.
+Damage** for that target. Choose **Roll Damage** for a target first to resolve and display its
+damage; the **Apply Damage** button then appears and uses that stored result. The console can roll
+damage separately for each target or make one shared roll, but damage is always applied to each
+target individually.
 
 Damage is resolved through WFRP4e's normal damage API. If it reduces the target to 0 Wounds, the
 result includes WFRP's normal critical link. When an expanded wounding type was selected and
